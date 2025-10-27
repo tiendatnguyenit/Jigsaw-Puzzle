@@ -1,0 +1,61 @@
+.puzzle-piece {
+  position: relative;
+  transition: all 0.2s ease;
+  user-select: none;
+  overflow: visible;
+}
+
+.puzzle-piece:hover {
+  transform: translateY(-1px);
+}
+
+.puzzle-piece.placed:hover {
+  transform: scale(1.02);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.puzzle-piece.selected {
+  z-index: 10;
+  transform: scale(1.05);
+}
+
+.puzzle-piece.placed {
+  /* Consistent styling for all pieces */
+}
+
+.puzzle-piece.unplaced {
+  /* Consistent styling for all pieces */
+}
+
+/* Drag and drop states */
+.puzzle-piece:active {
+  cursor: grabbing;
+  transform: rotate(5deg) scale(1.05);
+}
+
+/* Animation for piece placement */
+@keyframes piecePlaced {
+  0% {
+    transform: scale(1.2);
+    box-shadow: 0 0 30px rgba(76, 175, 80, 0.6);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+  }
+}
+
+.puzzle-piece.placed {
+  animation: piecePlaced 0.5s ease-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .puzzle-piece {
+    border-radius: 6px;
+  }
+  
+  .puzzle-piece:hover {
+    transform: translateY(-1px);
+  }
+}
