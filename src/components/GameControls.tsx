@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useDrop } from 'react-dnd';
-import { Settings, Play, RotateCcw, Upload, Image as ImageIcon } from 'lucide-react';
-import type { PuzzleConfig, PuzzlePiece } from '../types';
-import { PuzzlePieceComponent } from './PuzzlePiece';
-import './GameControls.css';
+import React, { useState } from "react";
+import { useDrop } from "react-dnd";
+import { Play, RotateCcw, Upload, Image as ImageIcon } from "lucide-react";
+import type { PuzzleConfig, PuzzlePiece } from "../types";
+import { PuzzlePieceComponent } from "./PuzzlePiece";
+import "./GameControls.css";
 
 interface GameControlsProps {
   puzzleConfig: PuzzleConfig;
@@ -30,27 +30,26 @@ export const GameControls: React.FC<GameControlsProps> = ({
   selectedPiece,
   onPieceSelect,
 }) => {
-  const [showSettings, setShowSettings] = useState(false);
-  const [customImageUrl, setCustomImageUrl] = useState('');
+  // const [showSettings, setShowSettings] = useState(false);
+  const showSettings = false;
+  const [customImageUrl, setCustomImageUrl] = useState("");
 
   // Drop zone for pieces
   const [, drop] = useDrop({
-    accept: 'puzzle-piece',
+    accept: "puzzle-piece",
     drop: (item: { id: string }, monitor) => {
       const delta = monitor.getDifferenceFromInitialOffset();
       if (!delta) return;
 
       // Move piece to holding area (set isPlaced to false and position in holding area)
-      const updatedPieces = pieces.map(p => 
-        p.id === item.id 
-          ? { ...p, x: 50, y: 50, isPlaced: false }
-          : p
+      const updatedPieces = pieces.map((p) =>
+        p.id === item.id ? { ...p, x: 50, y: 50, isPlaced: false } : p
       );
       onPiecesUpdate(updatedPieces);
     },
   });
 
-  const handleDifficultyChange = (difficulty: 'easy' | 'medium' | 'hard') => {
+  const handleDifficultyChange = (difficulty: "easy" | "medium" | "hard") => {
     const configs = {
       easy: { rows: 3, cols: 3, pieceSize: 100 },
       medium: { rows: 4, cols: 4, pieceSize: 80 },
@@ -85,27 +84,27 @@ export const GameControls: React.FC<GameControlsProps> = ({
         ...puzzleConfig,
         imageUrl: customImageUrl.trim(),
       });
-      setCustomImageUrl('');
+      setCustomImageUrl("");
     }
   };
 
   const presetImages = [
-    { name: 'Nature', url: 'https://picsum.photos/400/400?random=1' },
-    { name: 'City', url: 'https://picsum.photos/400/400?random=2' },
-    { name: 'Ocean', url: 'https://picsum.photos/400/400?random=3' },
-    { name: 'Mountains', url: 'https://picsum.photos/400/400?random=4' },
+    { name: "Nature", url: "https://picsum.photos/400/400?random=1" },
+    { name: "City", url: "https://picsum.photos/400/400?random=2" },
+    { name: "Ocean", url: "https://picsum.photos/400/400?random=3" },
+    { name: "Mountains", url: "https://picsum.photos/400/400?random=4" },
   ];
 
   return (
     <div className="game-controls">
       <div className="controls-header">
         <h2>Game Settings</h2>
-        <button
+        {/* <button
           className="settings-toggle"
           onClick={() => setShowSettings(!showSettings)}
         >
           <Settings size={20} />
-        </button>
+        </button> */}
       </div>
 
       {showSettings && (
@@ -114,10 +113,12 @@ export const GameControls: React.FC<GameControlsProps> = ({
           <div className="control-group">
             <label>Difficulty:</label>
             <div className="difficulty-buttons">
-              {(['easy', 'medium', 'hard'] as const).map((difficulty) => (
+              {(["easy", "medium", "hard"] as const).map((difficulty) => (
                 <button
                   key={difficulty}
-                  className={`difficulty-btn ${puzzleConfig.difficulty === difficulty ? 'active' : ''}`}
+                  className={`difficulty-btn ${
+                    puzzleConfig.difficulty === difficulty ? "active" : ""
+                  }`}
                   onClick={() => handleDifficultyChange(difficulty)}
                 >
                   {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
@@ -134,8 +135,12 @@ export const GameControls: React.FC<GameControlsProps> = ({
                 {presetImages.map((image, index) => (
                   <button
                     key={index}
-                    className={`preset-image ${puzzleConfig.imageUrl === image.url ? 'active' : ''}`}
-                    onClick={() => setPuzzleConfig({ ...puzzleConfig, imageUrl: image.url })}
+                    className={`preset-image ${
+                      puzzleConfig.imageUrl === image.url ? "active" : ""
+                    }`}
+                    onClick={() =>
+                      setPuzzleConfig({ ...puzzleConfig, imageUrl: image.url })
+                    }
                   >
                     <img src={image.url} alt={image.name} />
                     <span>{image.name}</span>
@@ -150,7 +155,7 @@ export const GameControls: React.FC<GameControlsProps> = ({
                     id="image-upload"
                     accept="image/*"
                     onChange={handleImageUpload}
-                    style={{ display: 'none' }}
+                    style={{ display: "none" }}
                   />
                   <label htmlFor="image-upload" className="upload-btn">
                     <Upload size={16} />
@@ -185,27 +190,29 @@ export const GameControls: React.FC<GameControlsProps> = ({
         ) : (
           <button className="reset-btn" onClick={onResetGame}>
             <RotateCcw size={20} />
-            {isGameComplete ? 'New Game' : 'Reset'}
+            {isGameComplete ? "New Game" : "Reset"}
           </button>
         )}
       </div>
 
       {/* Pieces Holding Area */}
       {isGameStarted && (
-        <div 
-          ref={drop as any}
+        <div
+          ref={drop as unknown as React.RefObject<HTMLDivElement>}
           className="pieces-holding-area"
         >
           <h3>Hold Pieces Here</h3>
           <div className="holding-pieces">
             {pieces
-              .filter(piece => !piece.isPlaced)
-              .map(piece => (
+              .filter((piece) => !piece.isPlaced)
+              .map((piece) => (
                 <PuzzlePieceComponent
                   key={piece.id}
                   piece={piece}
                   puzzleConfig={puzzleConfig}
-                  onClick={() => onPieceSelect(selectedPiece === piece.id ? null : piece.id)}
+                  onClick={() =>
+                    onPieceSelect(selectedPiece === piece.id ? null : piece.id)
+                  }
                   isSelected={selectedPiece === piece.id}
                 />
               ))}
