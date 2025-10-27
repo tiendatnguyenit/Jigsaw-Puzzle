@@ -73,7 +73,31 @@
   transform: translateY(0);
 }
 
-@media (max-width: 768px) {
+/* Mobile-first responsive adjustments */
+@media (max-width: 480px) {
+  .level-header {
+    flex-direction: column;
+    gap: 0.8rem;
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .level-title {
+    font-size: 1.2rem;
+  }
+  
+  .level-progress {
+    max-width: 100%;
+  }
+  
+  .submit-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
   .level-header {
     flex-direction: column;
     gap: 1rem;

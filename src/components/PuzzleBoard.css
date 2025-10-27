@@ -45,7 +45,35 @@
   font-weight: 600;
 }
 
-@media (max-width: 768px) {
+/* Mobile-first responsive adjustments */
+@media (max-width: 480px) {
+  .puzzle-board-container {
+    gap: 1rem;
+  }
+  
+  .puzzle-board {
+    min-width: 250px;
+    min-height: 250px;
+    border-width: 2px;
+  }
+  
+  .pieces-container {
+    max-width: 100%;
+    padding: 1rem;
+    gap: 0.3rem;
+  }
+  
+  .pieces-container h3 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .puzzle-grid {
+    display: none; /* Hide grid lines on very small screens for cleaner look */
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
   .puzzle-board {
     min-width: 280px;
     min-height: 280px;

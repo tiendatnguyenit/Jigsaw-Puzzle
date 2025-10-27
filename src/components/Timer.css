@@ -81,3 +81,33 @@
 .timer.critical .timer-progress {
   background: linear-gradient(90deg, #f44336, #ff5722);
 }
+
+/* Mobile-first responsive adjustments */
+@media (max-width: 480px) {
+  .timer {
+    padding: 0.8rem;
+    gap: 0.5rem;
+  }
+  
+  .timer-icon {
+    display: none; /* Hide icon on very small screens to save space */
+  }
+  
+  .timer-text {
+    font-size: 1.1rem;
+  }
+  
+  .timer-bar {
+    height: 6px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .timer {
+    padding: 0.75rem;
+  }
+  
+  .timer-text {
+    font-size: 1.2rem;
+  }
+}

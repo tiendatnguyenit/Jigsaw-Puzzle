@@ -270,7 +270,76 @@
   transform: translateY(-1px);
 }
 
-@media (max-width: 768px) {
+/* Mobile-first responsive adjustments */
+@media (max-width: 480px) {
+  .game-controls {
+    padding: 1rem;
+  }
+  
+  .controls-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .control-group {
+    margin-bottom: 1rem;
+  }
+  
+  .difficulty-buttons {
+    gap: 0.3rem;
+    flex-wrap: wrap;
+  }
+  
+  .difficulty-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .preset-images {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.3rem;
+  }
+  
+  .preset-image {
+    padding: 0.3rem;
+  }
+  
+  .preset-image img {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .preset-image span {
+    font-size: 0.6rem;
+  }
+  
+  .pieces-holding-area {
+    padding: 0.8rem;
+    min-height: 150px;
+  }
+  
+  .pieces-holding-area h3 {
+    font-size: 0.9rem;
+  }
+  
+  .holding-pieces {
+    gap: 0.3rem;
+  }
+  
+  .start-btn, .reset-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    width: 100%;
+  }
+  
+  .game-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
   .preset-images {
     grid-template-columns: repeat(4, 1fr);
   }

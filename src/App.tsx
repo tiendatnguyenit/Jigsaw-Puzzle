@@ -3,7 +3,6 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PuzzleBoard } from "./components/PuzzleBoard";
 import { GameControls } from "./components/GameControls";
-import { GameStats } from "./components/GameStats";
 import { Timer } from "./components/Timer";
 import { LevelHeader } from "./components/LevelHeader";
 import { ResultScreen } from "./components/ResultScreen";
@@ -18,7 +17,7 @@ import {
   GAME_LEVELS,
   LEVEL_TIME_LIMIT,
   PUZZLE_GRID_SIZE,
-  PIECE_SIZE,
+  getPieceSize,
 } from "./data/gameLevels";
 import {
   generatePuzzlePieces,
@@ -63,7 +62,7 @@ function App() {
   const puzzleConfig: PuzzleConfig = {
     rows: PUZZLE_GRID_SIZE,
     cols: PUZZLE_GRID_SIZE,
-    pieceSize: PIECE_SIZE,
+    pieceSize: getPieceSize(),
     imageUrl: currentLevelData.imageUrl,
     difficulty: "easy",
   };
@@ -336,11 +335,6 @@ function App() {
                 onPieceSelect={(pieceId: string | null) =>
                   setGameState((prev) => ({ ...prev, selectedPiece: pieceId }))
                 }
-              />
-
-              <GameStats
-                gameState={gameState}
-                isGameStarted={gameSession.gameStarted}
               />
             </div>
 

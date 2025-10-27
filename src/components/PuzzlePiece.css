@@ -49,8 +49,27 @@
   animation: piecePlaced 0.5s ease-out;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
+/* Mobile-first responsive adjustments */
+@media (max-width: 480px) {
+  .puzzle-piece {
+    border-radius: 4px;
+    touch-action: manipulation; /* Improve touch responsiveness */
+  }
+  
+  .puzzle-piece:hover {
+    transform: none; /* Disable hover effects on mobile */
+  }
+  
+  .puzzle-piece:active {
+    transform: scale(0.95); /* Better touch feedback */
+  }
+  
+  .puzzle-piece.placed:hover {
+    transform: none; /* Disable hover effects on mobile */
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
   .puzzle-piece {
     border-radius: 6px;
   }
