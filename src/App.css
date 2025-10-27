@@ -115,14 +115,17 @@ body {
   
   .left-panel {
     order: 1;
+    display: none; /* Hide on mobile - timer and controls not needed */
   }
   
   .center-panel {
     order: 2;
+    width: 100%;
   }
   
   .right-panel {
     order: 3;
+    display: none; /* Hide on mobile - reference image not needed with mobile interface */
   }
   
   .app-main {
@@ -352,5 +355,27 @@ body {
   .submit-message {
     font-size: 1rem;
     padding: 0.8rem;
+  }
+}
+
+/* Submit Button Container */
+.submit-button-container {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 480px) {
+  .submit-button-container {
+    margin-top: 1rem;
+  }
+  
+  .mobile-timer-container {
+    margin-bottom: 1rem;
+    width: 100%;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PuzzleBoard } from "./components/PuzzleBoard";
+import { MobilePieceSelector } from "./components/MobilePieceSelector";
 import { GameControls } from "./components/GameControls";
 import { Timer } from "./components/Timer";
 import { LevelHeader } from "./components/LevelHeader";
@@ -57,6 +58,7 @@ function App() {
   const [showResultScreen, setShowResultScreen] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
   const isProcessingLevelCompletion = useRef(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const currentLevelData = GAME_LEVELS[gameSession.currentLevel - 1];
   const puzzleConfig: PuzzleConfig = {
@@ -66,6 +68,22 @@ function App() {
     imageUrl: currentLevelData.imageUrl,
     difficulty: "easy",
   };
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      const isMobileDevice =
+        window.innerWidth <= 768 ||
+        /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+      setIsMobile(isMobileDevice);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Initialize puzzle pieces when level changes
   useEffect(() => {
@@ -128,6 +146,24 @@ function App() {
       pieces: newPieces,
       moves: prev.moves + 1,
     }));
+  };
+
+  const handleMobilePlacePiece = (
+    pieceId: string,
+    slotX: number,
+    slotY: number
+  ) => {
+    const updatedPieces = gameState.pieces.map((p) =>
+      p.id === pieceId ? { ...p, x: slotX, y: slotY, isPlaced: true } : p
+    );
+    updatePieces(updatedPieces);
+  };
+
+  const handleMobileRemovePiece = (pieceId: string) => {
+    const updatedPieces = gameState.pieces.map((p) =>
+      p.id === pieceId ? { ...p, x: 50, y: 50, isPlaced: false } : p
+    );
+    updatePieces(updatedPieces);
   };
 
   const handleTimeUp = () => {
@@ -293,14 +329,6 @@ function App() {
         <main className="app-main">
           <div className="game-container">
             <div className="left-panel">
-              <LevelHeader
-                currentLevel={gameSession.currentLevel}
-                totalLevels={gameSession.totalLevels}
-                isComplete={gameState.pieces.every((piece) => piece.isPlaced)}
-                onSubmit={handleSubmit}
-                canSubmit={gameState.pieces.every((piece) => piece.isPlaced)}
-              />
-
               <Timer
                 key={`timer-${gameSession.currentLevel}`}
                 timeLimit={LEVEL_TIME_LIMIT}
@@ -339,15 +367,92 @@ function App() {
             </div>
 
             <div className="center-panel">
-              <PuzzleBoard
-                pieces={gameState.pieces}
-                puzzleConfig={puzzleConfig}
-                onPiecesUpdate={updatePieces}
-                selectedPiece={gameState.selectedPiece}
-                onPieceSelect={(pieceId: string | null) =>
-                  setGameState((prev) => ({ ...prev, selectedPiece: pieceId }))
-                }
-              />
+              {isMobile ? (
+                <>
+                  {/* Mobile Timer */}
+                  <div className="mobile-timer-container">
+                    <Timer
+                      key={`timer-${gameSession.currentLevel}`}
+                      timeLimit={LEVEL_TIME_LIMIT}
+                      onTimeUp={handleTimeUp}
+                      isActive={
+                        gameSession.gameStarted && !gameState.isComplete
+                      }
+                    />
+                  </div>
+                  <div className="submit-button-container">
+                    <LevelHeader
+                      currentLevel={gameSession.currentLevel}
+                      totalLevels={gameSession.totalLevels}
+                      isComplete={gameState.pieces.every(
+                        (piece) => piece.isPlaced
+                      )}
+                      onSubmit={handleSubmit}
+                      canSubmit={gameState.pieces.every(
+                        (piece) => piece.isPlaced
+                      )}
+                    />
+                  </div>
+
+                  <MobilePieceSelector
+                    pieces={gameState.pieces}
+                    puzzleConfig={puzzleConfig}
+                    selectedPiece={gameState.selectedPiece}
+                    onPieceSelect={(pieceId: string | null) =>
+                      setGameState((prev) => ({
+                        ...prev,
+                        selectedPiece: pieceId,
+                      }))
+                    }
+                    onPlacePiece={handleMobilePlacePiece}
+                    onRemovePiece={handleMobileRemovePiece}
+                  />
+                  <div className="reference-image">
+                    <h3>Reference Image</h3>
+                    <img
+                      src={puzzleConfig.imageUrl}
+                      alt="Puzzle reference"
+                      style={{
+                        width: "100%",
+                        maxWidth: "300px",
+                        height: "auto",
+                        borderRadius: "8px",
+                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+                      }}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <PuzzleBoard
+                    pieces={gameState.pieces}
+                    puzzleConfig={puzzleConfig}
+                    onPiecesUpdate={updatePieces}
+                    selectedPiece={gameState.selectedPiece}
+                    onPieceSelect={(pieceId: string | null) =>
+                      setGameState((prev) => ({
+                        ...prev,
+                        selectedPiece: pieceId,
+                      }))
+                    }
+                  />
+
+                  {/* Submit Button - Right below PuzzleBoard */}
+                  <div className="submit-button-container">
+                    <LevelHeader
+                      currentLevel={gameSession.currentLevel}
+                      totalLevels={gameSession.totalLevels}
+                      isComplete={gameState.pieces.every(
+                        (piece) => piece.isPlaced
+                      )}
+                      onSubmit={handleSubmit}
+                      canSubmit={gameState.pieces.every(
+                        (piece) => piece.isPlaced
+                      )}
+                    />
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="right-panel">

@@ -28,7 +28,7 @@ export const GAME_LEVELS: GameLevel[] = [
   },
 ];
 
-export const LEVEL_TIME_LIMIT = 30; // seconds
+export const LEVEL_TIME_LIMIT = 90; // seconds
 export const PUZZLE_GRID_SIZE = 3; // 3x3 grid
 export const PIECE_SIZE = 100; // pixels
 
@@ -36,8 +36,8 @@ export const PIECE_SIZE = 100; // pixels
 export const getPieceSize = (): number => {
   if (typeof window !== "undefined") {
     const width = window.innerWidth;
-    if (width <= 480) return 80; // Smaller pieces for mobile
-    if (width <= 768) return 90; // Medium pieces for tablets
+    if (width <= 480) return 100; // Larger pieces for mobile - easier to see and interact
+    if (width <= 768) return 120; // Medium pieces for tablets
   }
-  return 100; // Default size for desktop
+  return 140; // Larger pieces for desktop
 };

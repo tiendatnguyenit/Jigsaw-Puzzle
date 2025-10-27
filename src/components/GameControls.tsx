@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDrop } from "react-dnd";
-import { Play, RotateCcw, Upload, Image as ImageIcon } from "lucide-react";
+import { Upload, Image as ImageIcon } from "lucide-react";
 import type { PuzzleConfig, PuzzlePiece } from "../types";
 import { PuzzlePieceComponent } from "./PuzzlePiece";
 import "./GameControls.css";
@@ -21,10 +21,7 @@ interface GameControlsProps {
 export const GameControls: React.FC<GameControlsProps> = ({
   puzzleConfig,
   setPuzzleConfig,
-  onStartGame,
-  onResetGame,
   isGameStarted,
-  isGameComplete,
   pieces,
   onPiecesUpdate,
   selectedPiece,
@@ -181,7 +178,7 @@ export const GameControls: React.FC<GameControlsProps> = ({
       )}
 
       {/* Game Actions */}
-      <div className="game-actions">
+      {/* <div className="game-actions">
         {!isGameStarted ? (
           <button className="start-btn" onClick={onStartGame}>
             <Play size={20} />
@@ -193,7 +190,7 @@ export const GameControls: React.FC<GameControlsProps> = ({
             {isGameComplete ? "New Game" : "Reset"}
           </button>
         )}
-      </div>
+      </div> */}
 
       {/* Pieces Holding Area */}
       {isGameStarted && (

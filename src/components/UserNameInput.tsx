@@ -47,6 +47,16 @@ export const UserNameInput: React.FC<UserNameInputProps> = ({
           <User className="user-icon" size={32} />
           <h2>Enter Your Name</h2>
           <p>Start your jigsaw puzzle challenge!</p>
+          <p>
+            made by{" "}
+            <a
+              href="https://www.instagram.com/hwg.taho"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Huong Thao
+            </a>
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="user-form">
