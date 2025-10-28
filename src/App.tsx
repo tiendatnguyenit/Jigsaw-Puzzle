@@ -221,8 +221,8 @@ function App() {
       // Puzzle is not correctly completed
       setSubmitMessage("Incorrect! Try again or submit anyway.");
       setTimeout(() => {
-        completeLevel(false);
         setSubmitMessage(null);
+        isProcessingLevelCompletion.current = false;
       }, 2000);
     }
   };
@@ -393,6 +393,21 @@ function App() {
                       )}
                     />
                   </div>
+
+                  {/* Mobile Submit Message */}
+                  {submitMessage && (
+                    <div
+                      className={`submit-message ${
+                        submitMessage.includes("Correct")
+                          ? "success"
+                          : submitMessage.includes("Incorrect")
+                          ? "error"
+                          : "info"
+                      }`}
+                    >
+                      {submitMessage}
+                    </div>
+                  )}
 
                   <MobilePieceSelector
                     pieces={gameState.pieces}
